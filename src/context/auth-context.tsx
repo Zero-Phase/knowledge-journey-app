@@ -28,34 +28,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      // This is a mock implementation - in a real app, this would call an API
-      if (email && password) {
-        // Check if user exists in localStorage (for demo purposes)
-        const usersData = localStorage.getItem("users");
-        const users = usersData ? JSON.parse(usersData) : [];
-        
-        const foundUser = users.find((u: any) => u.email === email);
-        
-        if (foundUser) {
-          // In a real app, you'd verify the password here
-          const mockUser: User = {
-            id: foundUser.id,
-            email: foundUser.email,
-            name: foundUser.name
-          };
-          
-          setUser(mockUser);
-          localStorage.setItem("user", JSON.stringify(mockUser));
-          
-          toast.success("Logged in successfully!");
-          return true;
-        } else {
-          toast.error("Invalid credentials");
-          return false;
-        }
+      if (!email || !password) {
+        toast.error("Please provide email and password");
+        return false;
       }
-      toast.error("Please provide email and password");
-      return false;
+
+      // Check if user exists in localStorage (for demo purposes)
+      const usersData = localStorage.getItem("users");
+      const users = usersData ? JSON.parse(usersData) : [];
+      
+      const foundUser = users.find((u: any) => u.email === email);
+      
+      if (foundUser && foundUser.password === password) {
+        // Password matches, login successful
+        const mockUser: User = {
+          id: foundUser.id,
+          email: foundUser.email,
+          name: foundUser.name
+        };
+        
+        setUser(mockUser);
+        localStorage.setItem("user", JSON.stringify(mockUser));
+        
+        toast.success("Logged in successfully!");
+        return true;
+      } else {
+        // User not found or password doesn't match
+        toast.error("Invalid email or password");
+        return false;
+      }
     } catch (error) {
       console.error("Login error:", error);
       toast.error("An error occurred during login");
