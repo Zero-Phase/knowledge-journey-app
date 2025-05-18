@@ -16,12 +16,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { Bell, Settings, User, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/context/theme-context";
 
 const Profile = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, updateUserProfile } = useAuth();
   const { theme, setTheme } = useTheme();
   
   const [profileData, setProfileData] = useState({
@@ -40,7 +40,7 @@ const Profile = () => {
   });
   
   const [isEditMode, setIsEditMode] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(user?.avatarUrl || null);
   
   const getInitials = (name: string) => {
     return name
@@ -87,11 +87,22 @@ const Profile = () => {
   };
   
   const handleSaveProfile = () => {
-    // In a real app, this would send data to a backend
+    // Update the user profile using the context function
+    updateUserProfile({
+      name: profileData.name,
+      email: profileData.email,
+      bio: profileData.bio,
+      phone: profileData.phone,
+      avatarUrl: profileData.avatarUrl,
+      timezone: profileData.timezone,
+      notificationPreferences: profileData.notificationPreferences
+    });
+    
     toast({
       title: "Profile updated",
       description: "Your profile information has been saved."
     });
+    
     setIsEditMode(false);
   };
   

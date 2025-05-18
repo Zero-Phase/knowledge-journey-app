@@ -9,6 +9,7 @@ interface AuthContextType {
   signup: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
   loading: boolean;
+  updateUserProfile: (updatedUser: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -44,7 +45,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const mockUser: User = {
           id: foundUser.id,
           email: foundUser.email,
-          name: foundUser.name
+          name: foundUser.name,
+          bio: foundUser.bio || "",
+          phone: foundUser.phone || "",
+          avatarUrl: foundUser.avatarUrl || "",
+          timezone: foundUser.timezone || "UTC",
+          notificationPreferences: foundUser.notificationPreferences || {
+            email: true,
+            push: true,
+            deadlines: true,
+            activities: true
+          }
         };
         
         setUser(mockUser);
@@ -83,7 +94,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           name,
           email,
           // In a real app, you'd hash the password before storing
-          password
+          password,
+          bio: "",
+          phone: "",
+          avatarUrl: "",
+          timezone: "UTC",
+          notificationPreferences: {
+            email: true,
+            push: true,
+            deadlines: true,
+            activities: true
+          }
         };
         
         // Store the new user
@@ -94,7 +115,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const mockUser: User = {
           id: newUser.id,
           email: newUser.email,
-          name: newUser.name
+          name: newUser.name,
+          bio: newUser.bio,
+          phone: newUser.phone,
+          avatarUrl: newUser.avatarUrl,
+          timezone: newUser.timezone,
+          notificationPreferences: newUser.notificationPreferences
         };
         
         setUser(mockUser);
@@ -117,6 +143,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateUserProfile = (updatedUser: Partial<User>) => {
+    if (user) {
+      // Update the current user state with the new data
+      const newUserData = { ...user, ...updatedUser };
+      setUser(newUserData);
+      
+      // Update the user in localStorage
+      localStorage.setItem("user", JSON.stringify(newUserData));
+      
+      // Also update the user in the users array
+      const usersData = localStorage.getItem("users");
+      if (usersData) {
+        const users = JSON.parse(usersData);
+        const updatedUsers = users.map((u: any) => 
+          u.id === user.id ? { ...u, ...updatedUser, password: u.password } : u
+        );
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+      }
+      
+      return true;
+    }
+    return false;
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
@@ -124,7 +174,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, loading, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );
