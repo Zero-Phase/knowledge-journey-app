@@ -10,6 +10,7 @@ interface AuthContextType {
   logout: () => void;
   loading: boolean;
   updateUserProfile: (updatedUser: Partial<User>) => void;
+  deleteAccount: () => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -34,9 +35,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return false;
       }
 
-      // Check if user exists in localStorage (for demo purposes)
-      const usersData = localStorage.getItem("users");
+      // Instead of relying on localStorage "users" which might be device-specific,
+      // Use sessionStorage for demo since it simulates a server better
+      const usersData = sessionStorage.getItem("users") || localStorage.getItem("users");
       const users = usersData ? JSON.parse(usersData) : [];
+      
+      // Save users to sessionStorage to simulate a shared database
+      if (!sessionStorage.getItem("users")) {
+        sessionStorage.setItem("users", JSON.stringify(users));
+      }
       
       const foundUser = users.find((u: any) => u.email === email);
       
@@ -61,6 +68,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(mockUser);
         localStorage.setItem("user", JSON.stringify(mockUser));
         
+        // Track device login for this user (limit to 5)
+        const deviceLogins = JSON.parse(localStorage.getItem(`device_logins_${foundUser.id}`) || '[]');
+        const deviceId = crypto.randomUUID(); // Generate unique device ID
+        
+        // Only add if not already there and under limit
+        if (!deviceLogins.includes(deviceId) && deviceLogins.length < 5) {
+          deviceLogins.push(deviceId);
+          localStorage.setItem(`device_logins_${foundUser.id}`, JSON.stringify(deviceLogins));
+        }
+        
         toast.success("Logged in successfully!");
         return true;
       } else {
@@ -78,8 +95,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signup = async (name: string, email: string, password: string) => {
     try {
       if (name && email && password) {
-        // This is a mock implementation - in a real app, this would call an API
-        const usersData = localStorage.getItem("users");
+        // Use sessionStorage to simulate a shared database
+        const usersData = sessionStorage.getItem("users") || localStorage.getItem("users");
         const users = usersData ? JSON.parse(usersData) : [];
         
         const userExists = users.some((u: any) => u.email === email);
@@ -107,9 +124,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }
         };
         
-        // Store the new user
+        // Store the new user in both local and session storage
         users.push(newUser);
         localStorage.setItem("users", JSON.stringify(users));
+        sessionStorage.setItem("users", JSON.stringify(users));
         
         // Log the user in
         const mockUser: User = {
@@ -129,6 +147,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // Initialize empty courses data for the new user
         const userCoursesKey = `courses_${newUser.id}`;
         localStorage.setItem(userCoursesKey, JSON.stringify([]));
+        
+        // Track device login for this user
+        const deviceId = crypto.randomUUID(); // Generate unique device ID
+        localStorage.setItem(`device_logins_${newUser.id}`, JSON.stringify([deviceId]));
         
         toast.success("Account created successfully!");
         return true;
@@ -152,19 +174,61 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // Update the user in localStorage
       localStorage.setItem("user", JSON.stringify(newUserData));
       
-      // Also update the user in the users array
-      const usersData = localStorage.getItem("users");
-      if (usersData) {
-        const users = JSON.parse(usersData);
-        const updatedUsers = users.map((u: any) => 
-          u.id === user.id ? { ...u, ...updatedUser, password: u.password } : u
-        );
-        localStorage.setItem("users", JSON.stringify(updatedUsers));
-      }
+      // Also update the user in the users array in both localStorage and sessionStorage
+      const updateUserInStorage = (storage: Storage) => {
+        const usersData = storage.getItem("users");
+        if (usersData) {
+          const users = JSON.parse(usersData);
+          const updatedUsers = users.map((u: any) => 
+            u.id === user.id ? { ...u, ...updatedUser, password: u.password } : u
+          );
+          storage.setItem("users", JSON.stringify(updatedUsers));
+        }
+      };
+      
+      updateUserInStorage(localStorage);
+      updateUserInStorage(sessionStorage);
       
       return true;
     }
     return false;
+  };
+
+  const deleteAccount = async () => {
+    try {
+      if (!user) {
+        toast.error("No user is currently logged in");
+        return false;
+      }
+
+      // Remove user from both storages
+      const removeUserFromStorage = (storage: Storage) => {
+        const usersData = storage.getItem("users");
+        if (usersData) {
+          const users = JSON.parse(usersData);
+          const updatedUsers = users.filter((u: any) => u.id !== user.id);
+          storage.setItem("users", JSON.stringify(updatedUsers));
+        }
+      };
+      
+      removeUserFromStorage(localStorage);
+      removeUserFromStorage(sessionStorage);
+
+      // Clear user-specific data
+      localStorage.removeItem(`courses_${user.id}`);
+      localStorage.removeItem(`device_logins_${user.id}`);
+      localStorage.removeItem("user");
+      
+      // Log out the user
+      setUser(null);
+      
+      toast.success("Account deleted successfully");
+      return true;
+    } catch (error) {
+      console.error("Delete account error:", error);
+      toast.error("An error occurred while deleting your account");
+      return false;
+    }
   };
 
   const logout = () => {
@@ -174,7 +238,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, loading, updateUserProfile }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, loading, updateUserProfile, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );

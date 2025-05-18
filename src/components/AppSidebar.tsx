@@ -1,6 +1,6 @@
 
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Calendar, BookOpen, ListTodo, Folder, Plus, Settings, Activity } from "lucide-react";
+import { Calendar, BookOpen, ListTodo, Folder, Plus, Settings, Activity, PanelLeft } from "lucide-react";
 
 import {
   Sidebar,
@@ -13,9 +13,10 @@ import {
 import { useAuth } from "@/context/auth-context";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "@/components/ui/button";
 
 export function AppSidebar() {
-  const { state, setOpenMobile } = useSidebar();
+  const { state, setOpenMobile, toggleSidebar } = useSidebar();
   const isCollapsed = state === "collapsed";
   const location = useLocation();
   const { user, logout } = useAuth();
@@ -47,16 +48,25 @@ export function AppSidebar() {
   return (
     <Sidebar className={isCollapsed ? "w-14" : "w-60"} collapsible="icon">
       <SidebarContent>
-        <div className={`flex items-center py-4 ${isCollapsed ? "justify-center" : "px-4"}`}>
-          {isCollapsed ? (
+        {/* Only show toggle button at the top, not app logo on desktop */}
+        <div className={`flex items-center py-4 ${isCollapsed ? "justify-center" : "px-4 justify-between"}`}>
+          {!isMobile && (
+            <Button variant="ghost" size="icon" onClick={toggleSidebar} className="h-10 w-10">
+              <PanelLeft className="h-5 w-5" />
+              <span className="sr-only">Toggle Sidebar</span>
+            </Button>
+          )}
+          
+          {/* Only show the app logo when collapsed on desktop or on mobile */}
+          {(isCollapsed || isMobile) && (
             <div className="p-2 bg-primary/10 rounded-full">
               <BookOpen className="h-6 w-6 text-primary" />
             </div>
-          ) : (
-            <h1 className="text-xl font-bold flex items-center gap-2">
-              <BookOpen className="h-6 w-6 text-primary" />
-              StudyTracker
-            </h1>
+          )}
+          
+          {/* Show app name when expanded on desktop */}
+          {!isCollapsed && !isMobile && (
+            <h1 className="text-xl font-bold">StudyTracker</h1>
           )}
         </div>
 
@@ -120,6 +130,19 @@ export function AppSidebar() {
               {!isCollapsed && <span>Profile</span>}
             </SidebarMenuButton>
           </SidebarMenuItem>
+          
+          {/* Add toggle sidebar option for mobile */}
+          {isMobile && (
+            <SidebarMenuItem>
+              <SidebarMenuButton 
+                onClick={() => setOpenMobile(false)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted/50 w-full`}
+              >
+                <PanelLeft className="h-5 w-5" />
+                <span>Close Sidebar</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )}
         </SidebarMenu>
 
         {!isCollapsed && (
