@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
 import { Bell, Settings, User, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/context/theme-context";
 
