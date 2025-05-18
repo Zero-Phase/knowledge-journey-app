@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useCourses } from '@/context/course-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,12 +7,50 @@ import CourseCard from '@/components/CourseCard';
 import ProgressRing from '@/components/ProgressRing';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Calendar, Plus, ArrowUp, ListCheck, Book } from 'lucide-react';
+import { Calendar, Plus, ArrowUp, ListCheck, Book, Activity } from 'lucide-react';
 import { format, isBefore, addDays } from 'date-fns';
+import { Activity as ActivityType } from '@/types';
+
+// Mock activities data
+const mockActivities: ActivityType[] = [
+  {
+    id: "1",
+    title: "Study Linear Algebra",
+    description: "Complete exercises 1-10 from chapter 3",
+    subjectId: "math-101",
+    subjectName: "Mathematics",
+    courseId: "course-1",
+    courseName: "Engineering Fundamentals",
+    startDate: new Date(2025, 4, 19, 14, 0).toISOString(),
+    endDate: new Date(2025, 4, 19, 16, 0).toISOString(),
+    durationInMinutes: 120,
+    completed: false,
+    priority: "high",
+    tags: ["math", "algebra", "homework"],
+    createdAt: new Date(2025, 4, 15).toISOString()
+  },
+  {
+    id: "2",
+    title: "Read Physics Textbook",
+    description: "Chapters 5-7 on Thermodynamics",
+    subjectId: "phys-101",
+    subjectName: "Physics",
+    courseId: "course-1",
+    courseName: "Engineering Fundamentals",
+    startDate: new Date(2025, 4, 20, 10, 0).toISOString(),
+    endDate: new Date(2025, 4, 20, 12, 0).toISOString(),
+    durationInMinutes: 120,
+    completed: true,
+    priority: "medium",
+    tags: ["physics", "reading"],
+    createdAt: new Date(2025, 4, 15).toISOString()
+  }
+];
 
 const Dashboard = () => {
   const { courses, loading } = useCourses();
   const navigate = useNavigate();
+  const [activities, setActivities] = useState<ActivityType[]>(mockActivities);
 
   // Calculate overall progress across all courses
   const overallProgress = courses.length 
@@ -47,6 +85,12 @@ const Dashboard = () => {
   // Get recent course activity
   const recentCourses = [...courses]
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 3);
+    
+  // Get upcoming activities
+  const upcomingActivities = activities
+    .filter(activity => !activity.completed)
+    .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
     .slice(0, 3);
 
   return (
@@ -152,6 +196,66 @@ const Dashboard = () => {
                 </p>
               </CardContent>
             </Card>
+          </div>
+          
+          {/* Upcoming Activities Section */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Upcoming Activities</h2>
+              <Button variant="outline" size="sm" onClick={() => navigate('/activities')}>
+                View All
+              </Button>
+            </div>
+            
+            {upcomingActivities.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-3">
+                {upcomingActivities.map(activity => (
+                  <Card key={activity.id}>
+                    <CardHeader className="pb-2">
+                      <div className="flex justify-between">
+                        <div>
+                          <CardTitle className="text-base">{activity.title}</CardTitle>
+                          <CardDescription>
+                            {activity.courseName}
+                          </CardDescription>
+                        </div>
+                        <Activity className="h-4 w-4 text-muted-foreground" />
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-sm space-y-1">
+                        <div className="flex items-center text-muted-foreground">
+                          <Calendar className="mr-2 h-4 w-4" />
+                          <span>{format(new Date(activity.startDate), "PPP")}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <span className="text-xs inline-flex items-center px-2 py-1 rounded-full font-medium mr-2"
+                            style={{
+                              backgroundColor: activity.priority === 'high' ? 'rgba(239, 68, 68, 0.1)' : 
+                                              activity.priority === 'medium' ? 'rgba(245, 158, 11, 0.1)' : 
+                                              'rgba(34, 197, 94, 0.1)',
+                              color: activity.priority === 'high' ? 'rgb(239, 68, 68)' : 
+                                    activity.priority === 'medium' ? 'rgb(245, 158, 11)' : 
+                                    'rgb(34, 197, 94)'
+                            }}
+                          >
+                            {activity.priority} priority
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <Card className="p-6 text-center">
+                <CardDescription>No upcoming activities. 
+                  <Button variant="link" onClick={() => navigate('/activities')}>
+                    Create an activity
+                  </Button>
+                </CardDescription>
+              </Card>
+            )}
           </div>
           
           {/* Course Tabs */}

@@ -3,6 +3,16 @@ export interface User {
   id: string;
   email: string;
   name: string;
+  avatarUrl?: string;
+  bio?: string;
+  phone?: string;
+  timezone?: string;
+  notificationPreferences?: {
+    email: boolean;
+    push: boolean;
+    deadlines: boolean;
+    activities: boolean;
+  };
 }
 
 export interface Course {
@@ -40,4 +50,21 @@ export interface Subtopic {
   id: string;
   name: string;
   completed: boolean;
+}
+
+export interface Activity {
+  id: string;
+  title: string;
+  description: string;
+  subjectId: string;
+  subjectName: string;
+  courseId: string;
+  courseName: string;
+  startDate: string;
+  endDate: string;
+  durationInMinutes: number;
+  completed: boolean;
+  priority: 'low' | 'medium' | 'high';
+  tags: string[];
+  createdAt: string;
 }
