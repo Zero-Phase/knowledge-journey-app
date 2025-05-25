@@ -15,9 +15,9 @@ const AppLayout = () => {
     return null;
   }
 
-  // If no user, redirect to login
+  // If no user, redirect to landing page
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return (

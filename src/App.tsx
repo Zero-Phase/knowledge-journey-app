@@ -13,6 +13,7 @@ import AppLayout from "./components/AppLayout";
 import AuthLayout from "./components/AuthLayout";
 
 // Pages
+import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import CourseList from "./pages/CourseList";
 import CourseForm from "./pages/CourseForm";
@@ -36,6 +37,9 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <Routes>
+                {/* Landing Page */}
+                <Route path="/" element={<Landing />} />
+                
                 {/* Auth Routes */}
                 <Route element={<AuthLayout />}>
                   <Route path="/login" element={<Login />} />
@@ -52,9 +56,6 @@ const App = () => (
                   <Route path="/activities" element={<Activities />} />
                   <Route path="/profile" element={<Profile />} />
                 </Route>
-                
-                {/* Redirects */}
-                <Route path="/" element={<Navigate to="/dashboard" />} />
                 
                 {/* Catch-all Route */}
                 <Route path="*" element={<NotFound />} />
