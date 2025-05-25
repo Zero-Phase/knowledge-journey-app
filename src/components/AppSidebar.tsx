@@ -50,26 +50,34 @@ export function AppSidebar() {
       <SidebarContent className="flex flex-col h-full">
         {/* Header with app logo and sidebar toggle */}
         <div className={`flex items-center p-3 border-b ${isCollapsed ? "justify-center" : "justify-between"}`}>
-          {/* App logo */}
-          <div className={`flex items-center gap-2 ${isCollapsed ? "" : "flex-1"}`}>
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <BookOpen className="h-5 w-5 text-primary" />
+          {isCollapsed ? (
+            // When collapsed, show only the app logo centered
+            <div className="flex items-center justify-center w-full">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <BookOpen className="h-5 w-5 text-primary" />
+              </div>
             </div>
-            {!isCollapsed && (
-              <span className="font-semibold text-lg">StudyTracker</span>
-            )}
-          </div>
-          
-          {/* Sidebar toggle button */}
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={toggleSidebar} 
-            className="h-8 w-8 hover:bg-muted/50"
-          >
-            <PanelLeft className="h-4 w-4" />
-            <span className="sr-only">Toggle Sidebar</span>
-          </Button>
+          ) : (
+            // When expanded, show logo and toggle button
+            <>
+              <div className="flex items-center gap-2">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                </div>
+                <span className="font-semibold text-lg">StudyTracker</span>
+              </div>
+              
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={toggleSidebar} 
+                className="h-8 w-8 hover:bg-muted/50"
+              >
+                <PanelLeft className="h-4 w-4" />
+                <span className="sr-only">Toggle Sidebar</span>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Navigation Menu */}
@@ -78,7 +86,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/dashboard")}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/dashboard")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/dashboard")}`}
               >
                 <ListTodo className="h-5 w-5 flex-shrink-0" />
                 {!isCollapsed && <span>Dashboard</span>}
@@ -88,7 +96,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/courses")}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/courses")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/courses")}`}
               >
                 <Folder className="h-5 w-5 flex-shrink-0" />
                 {!isCollapsed && <span>My Courses</span>}
@@ -98,7 +106,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/courses/new")}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/courses/new")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/courses/new")}`}
               >
                 <Plus className="h-5 w-5 flex-shrink-0" />
                 {!isCollapsed && <span>New Course</span>}
@@ -108,7 +116,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/calendar")}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/calendar")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/calendar")}`}
               >
                 <Calendar className="h-5 w-5 flex-shrink-0" />
                 {!isCollapsed && <span>Calendar</span>}
@@ -118,7 +126,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/activities")}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/activities")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/activities")}`}
               >
                 <Activity className="h-5 w-5 flex-shrink-0" />
                 {!isCollapsed && <span>Activities</span>}
@@ -128,7 +136,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/profile")}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/profile")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/profile")}`}
               >
                 <Settings className="h-5 w-5 flex-shrink-0" />
                 {!isCollapsed && <span>Profile</span>}
