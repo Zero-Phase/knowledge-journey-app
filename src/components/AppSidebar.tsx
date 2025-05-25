@@ -48,26 +48,18 @@ export function AppSidebar() {
   return (
     <Sidebar className={isCollapsed ? "w-14" : "w-60"} collapsible="icon">
       <SidebarContent>
-        {/* Only show toggle button at the top, not app logo on desktop */}
-        <div className={`flex items-center py-4 ${isCollapsed ? "justify-center" : "px-4 justify-between"}`}>
-          {!isMobile && (
-            <Button variant="ghost" size="icon" onClick={toggleSidebar} className="h-10 w-10">
-              <PanelLeft className="h-5 w-5" />
-              <span className="sr-only">Toggle Sidebar</span>
-            </Button>
-          )}
+        {/* Header with app logo on left and sidebar toggle on right */}
+        <div className="flex items-center justify-between py-4 px-4">
+          {/* App logo - always visible */}
+          <div className="p-2 bg-primary/10 rounded-full">
+            <BookOpen className="h-6 w-6 text-primary" />
+          </div>
           
-          {/* Only show the app logo when collapsed on desktop or on mobile */}
-          {(isCollapsed || isMobile) && (
-            <div className="p-2 bg-primary/10 rounded-full">
-              <BookOpen className="h-6 w-6 text-primary" />
-            </div>
-          )}
-          
-          {/* Show app name when expanded on desktop */}
-          {!isCollapsed && !isMobile && (
-            <h1 className="text-xl font-bold">StudyTracker</h1>
-          )}
+          {/* Sidebar toggle button */}
+          <Button variant="ghost" size="icon" onClick={toggleSidebar} className="h-10 w-10">
+            <PanelLeft className="h-5 w-5" />
+            <span className="sr-only">Toggle Sidebar</span>
+          </Button>
         </div>
 
         <SidebarMenu>
