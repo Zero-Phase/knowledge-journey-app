@@ -34,7 +34,7 @@ export function AppSidebar() {
   
   const handleNavLinkClick = (path: string) => {
     if (isMobile) {
-      setOpenMobile(false); // Close sidebar on mobile when a link is clicked
+      setOpenMobile(false);
     }
     navigate(path);
   };
@@ -46,116 +46,143 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar className={isCollapsed ? "w-14" : "w-60"} collapsible="icon">
-      <SidebarContent>
-        {/* Header with app logo on left and sidebar toggle on right */}
-        <div className="flex items-center justify-between py-4 px-4">
-          {/* App logo - always visible */}
-          <div className="p-2 bg-primary/10 rounded-full">
-            <BookOpen className="h-6 w-6 text-primary" />
+    <Sidebar className={isCollapsed ? "w-16" : "w-64"} collapsible="icon">
+      <SidebarContent className="flex flex-col h-full">
+        {/* Header with app logo and sidebar toggle */}
+        <div className={`flex items-center p-3 border-b ${isCollapsed ? "justify-center" : "justify-between"}`}>
+          {/* App logo */}
+          <div className={`flex items-center gap-2 ${isCollapsed ? "" : "flex-1"}`}>
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <BookOpen className="h-5 w-5 text-primary" />
+            </div>
+            {!isCollapsed && (
+              <span className="font-semibold text-lg">StudyTracker</span>
+            )}
           </div>
           
           {/* Sidebar toggle button */}
-          <Button variant="ghost" size="icon" onClick={toggleSidebar} className="h-10 w-10">
-            <PanelLeft className="h-5 w-5" />
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleSidebar} 
+            className="h-8 w-8 hover:bg-muted/50"
+          >
+            <PanelLeft className="h-4 w-4" />
             <span className="sr-only">Toggle Sidebar</span>
           </Button>
         </div>
 
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton 
-              onClick={() => handleNavLinkClick("/dashboard")}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md ${getNavClass(location.pathname === "/dashboard")}`}
-            >
-              <ListTodo className="h-5 w-5" />
-              {!isCollapsed && <span>Dashboard</span>}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          
-          <SidebarMenuItem>
-            <SidebarMenuButton 
-              onClick={() => handleNavLinkClick("/courses")}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md ${getNavClass(location.pathname === "/courses")}`}
-            >
-              <Folder className="h-5 w-5" />
-              {!isCollapsed && <span>My Courses</span>}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          
-          <SidebarMenuItem>
-            <SidebarMenuButton 
-              onClick={() => handleNavLinkClick("/courses/new")}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md ${getNavClass(location.pathname === "/courses/new")}`}
-            >
-              <Plus className="h-5 w-5" />
-              {!isCollapsed && <span>New Course</span>}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          
-          <SidebarMenuItem>
-            <SidebarMenuButton 
-              onClick={() => handleNavLinkClick("/calendar")}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md ${getNavClass(location.pathname === "/calendar")}`}
-            >
-              <Calendar className="h-5 w-5" />
-              {!isCollapsed && <span>Calendar</span>}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-
-          <SidebarMenuItem>
-            <SidebarMenuButton 
-              onClick={() => handleNavLinkClick("/activities")}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md ${getNavClass(location.pathname === "/activities")}`}
-            >
-              <Activity className="h-5 w-5" />
-              {!isCollapsed && <span>Activities</span>}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          
-          <SidebarMenuItem>
-            <SidebarMenuButton 
-              onClick={() => handleNavLinkClick("/profile")}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md ${getNavClass(location.pathname === "/profile")}`}
-            >
-              <Settings className="h-5 w-5" />
-              {!isCollapsed && <span>Profile</span>}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          
-          {/* Add toggle sidebar option for mobile */}
-          {isMobile && (
+        {/* Navigation Menu */}
+        <div className="flex-1 p-2">
+          <SidebarMenu className="space-y-1">
             <SidebarMenuItem>
               <SidebarMenuButton 
-                onClick={() => setOpenMobile(false)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted/50 w-full`}
+                onClick={() => handleNavLinkClick("/dashboard")}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/dashboard")}`}
               >
-                <PanelLeft className="h-5 w-5" />
-                <span>Close Sidebar</span>
+                <ListTodo className="h-5 w-5 flex-shrink-0" />
+                {!isCollapsed && <span>Dashboard</span>}
               </SidebarMenuButton>
             </SidebarMenuItem>
-          )}
-        </SidebarMenu>
+            
+            <SidebarMenuItem>
+              <SidebarMenuButton 
+                onClick={() => handleNavLinkClick("/courses")}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/courses")}`}
+              >
+                <Folder className="h-5 w-5 flex-shrink-0" />
+                {!isCollapsed && <span>My Courses</span>}
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            
+            <SidebarMenuItem>
+              <SidebarMenuButton 
+                onClick={() => handleNavLinkClick("/courses/new")}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/courses/new")}`}
+              >
+                <Plus className="h-5 w-5 flex-shrink-0" />
+                {!isCollapsed && <span>New Course</span>}
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            
+            <SidebarMenuItem>
+              <SidebarMenuButton 
+                onClick={() => handleNavLinkClick("/calendar")}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/calendar")}`}
+              >
+                <Calendar className="h-5 w-5 flex-shrink-0" />
+                {!isCollapsed && <span>Calendar</span>}
+              </SidebarMenuButton>
+            </SidebarMenuItem>
 
-        {!isCollapsed && (
-          <div className="mt-auto p-4">
-            {user && (
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <Avatar className="h-6 w-6">
-                    <AvatarImage src={user.avatarUrl} alt={user.name} />
-                    <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-                  </Avatar>
-                  <div className="text-sm font-medium truncate">{user.name}</div>
-                </div>
-                <button 
-                  onClick={logout}
-                  className="text-sm text-muted-foreground hover:text-primary"
+            <SidebarMenuItem>
+              <SidebarMenuButton 
+                onClick={() => handleNavLinkClick("/activities")}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/activities")}`}
+              >
+                <Activity className="h-5 w-5 flex-shrink-0" />
+                {!isCollapsed && <span>Activities</span>}
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            
+            <SidebarMenuItem>
+              <SidebarMenuButton 
+                onClick={() => handleNavLinkClick("/profile")}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/profile")}`}
+              >
+                <Settings className="h-5 w-5 flex-shrink-0" />
+                {!isCollapsed && <span>Profile</span>}
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            
+            {/* Close sidebar option for mobile */}
+            {isMobile && (
+              <SidebarMenuItem>
+                <SidebarMenuButton 
+                  onClick={() => setOpenMobile(false)}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors hover:bg-muted/50 w-full"
                 >
-                  Sign Out
-                </button>
-              </div>
+                  <PanelLeft className="h-5 w-5 flex-shrink-0" />
+                  <span>Close Sidebar</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             )}
+          </SidebarMenu>
+        </div>
+
+        {/* User section at bottom */}
+        {!isCollapsed && user && (
+          <div className="p-3 border-t">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={user.avatarUrl} alt={user.name} />
+                  <AvatarFallback className="text-xs">{getInitials(user.name)}</AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium truncate">{user.name}</div>
+                  <div className="text-xs text-muted-foreground truncate">{user.email}</div>
+                </div>
+              </div>
+              <Button 
+                onClick={logout}
+                variant="ghost"
+                size="sm"
+                className="justify-start text-sm text-muted-foreground hover:text-primary"
+              >
+                Sign Out
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Collapsed user avatar */}
+        {isCollapsed && user && (
+          <div className="p-3 border-t flex justify-center">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={user.avatarUrl} alt={user.name} />
+              <AvatarFallback className="text-xs">{getInitials(user.name)}</AvatarFallback>
+            </Avatar>
           </div>
         )}
       </SidebarContent>
