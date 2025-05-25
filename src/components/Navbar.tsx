@@ -2,15 +2,18 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useAuth } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Moon, Sun, Bell } from "lucide-react";
+import { Moon, Sun, Bell } from "lucide-react";
 import { useTheme } from "@/context/theme-context";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
+import { useSidebar } from "@/components/ui/sidebar";
 
 export function Navbar() {
   const { user, logout } = useAuth();
   const { theme, setTheme } = useTheme();
+  const { state } = useSidebar();
+  const isSidebarExpanded = state === "expanded";
   
   const getInitials = (name: string) => {
     return name
@@ -24,11 +27,8 @@ export function Navbar() {
   return (
     <div className="h-16 border-b flex items-center px-4 justify-between">
       <div className="flex items-center gap-2">
-        <SidebarTrigger />
-        <div className="flex items-center gap-2">
-          <BookOpen className="h-5 w-5 text-primary" />
-          <span className="font-medium">StudyTracker</span>
-        </div>
+        {/* Only show sidebar trigger when sidebar is collapsed */}
+        {!isSidebarExpanded && <SidebarTrigger />}
       </div>
 
       <div className="flex items-center gap-3">
