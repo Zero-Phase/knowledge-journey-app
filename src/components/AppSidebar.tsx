@@ -48,8 +48,8 @@ export function AppSidebar() {
   return (
     <Sidebar className={isCollapsed ? "w-16" : "w-64"} collapsible="icon">
       <SidebarContent className="flex flex-col h-full">
-        {/* Header with app logo and sidebar toggle */}
-        <div className={`flex items-center p-3 border-b ${isCollapsed ? "justify-center" : "justify-between"}`}>
+        {/* Header with app logo and sidebar toggle - same height as navbar */}
+        <div className={`flex items-center h-16 px-3 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 ${isCollapsed ? "justify-center" : "justify-between"}`}>
           {isCollapsed ? (
             // When collapsed, show only the app logo centered
             <div className="flex items-center justify-center w-full">
@@ -71,7 +71,7 @@ export function AppSidebar() {
                 variant="ghost" 
                 size="icon" 
                 onClick={toggleSidebar} 
-                className="h-8 w-8 hover:bg-muted/50"
+                className="h-8 w-8 hover:bg-muted/50 hidden md:flex"
               >
                 <PanelLeft className="h-4 w-4" />
                 <span className="sr-only">Toggle Sidebar</span>
@@ -81,7 +81,7 @@ export function AppSidebar() {
         </div>
 
         {/* Navigation Menu */}
-        <div className="flex-1 p-2">
+        <div className="flex-1 p-2 overflow-y-auto">
           <SidebarMenu className="space-y-1">
             <SidebarMenuItem>
               <SidebarMenuButton 
@@ -148,7 +148,7 @@ export function AppSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton 
                   onClick={() => setOpenMobile(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors hover:bg-muted/50 w-full"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors hover:bg-muted/50 w-full md:hidden"
                 >
                   <PanelLeft className="h-5 w-5 flex-shrink-0" />
                   <span>Close Sidebar</span>
@@ -160,10 +160,10 @@ export function AppSidebar() {
 
         {/* User section at bottom */}
         {!isCollapsed && user && (
-          <div className="p-3 border-t">
+          <div className="p-3 border-t bg-background/50">
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-3">
-                <Avatar className="h-8 w-8">
+                <Avatar className="h-8 w-8 flex-shrink-0">
                   <AvatarImage src={user.avatarUrl} alt={user.name} />
                   <AvatarFallback className="text-xs">{getInitials(user.name)}</AvatarFallback>
                 </Avatar>
@@ -186,7 +186,7 @@ export function AppSidebar() {
 
         {/* Collapsed user avatar */}
         {isCollapsed && user && (
-          <div className="p-3 border-t flex justify-center">
+          <div className="p-3 border-t bg-background/50 flex justify-center">
             <Avatar className="h-8 w-8">
               <AvatarImage src={user.avatarUrl} alt={user.name} />
               <AvatarFallback className="text-xs">{getInitials(user.name)}</AvatarFallback>
