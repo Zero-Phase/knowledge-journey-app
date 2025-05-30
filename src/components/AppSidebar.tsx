@@ -1,5 +1,5 @@
 
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Calendar, BookOpen, ListTodo, Folder, Plus, Settings, Activity, PanelLeft } from "lucide-react";
 
 import {
@@ -142,19 +142,6 @@ export function AppSidebar() {
                 {!isCollapsed && <span>Profile</span>}
               </SidebarMenuButton>
             </SidebarMenuItem>
-            
-            {/* Close sidebar option for mobile */}
-            {isMobile && (
-              <SidebarMenuItem>
-                <SidebarMenuButton 
-                  onClick={() => setOpenMobile(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors hover:bg-muted/50 w-full md:hidden"
-                >
-                  <PanelLeft className="h-5 w-5 flex-shrink-0" />
-                  <span>Close Sidebar</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            )}
           </SidebarMenu>
         </div>
 

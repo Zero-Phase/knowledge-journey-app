@@ -27,8 +27,9 @@ export function Navbar() {
   return (
     <div className="h-16 border-b flex items-center px-4 justify-between bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
       <div className="flex items-center gap-2">
-        {/* Show sidebar trigger when sidebar is collapsed or on mobile */}
-        {!isSidebarExpanded && <SidebarTrigger className="md:hidden lg:flex" />}
+        {/* Show sidebar trigger on mobile always, on desktop only when sidebar is collapsed */}
+        <SidebarTrigger className="md:hidden" />
+        {!isSidebarExpanded && <SidebarTrigger className="hidden md:flex" />}
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3">
