@@ -46,32 +46,32 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar className={isCollapsed ? "w-16" : "w-64"} collapsible="icon">
+    <Sidebar className={`transition-all duration-300 ease-in-out ${isCollapsed ? "w-16" : "w-64"}`} collapsible="icon">
       <SidebarContent className="flex flex-col h-full">
         {/* Header with app logo and sidebar toggle - same height as navbar */}
-        <div className={`flex items-center h-16 px-3 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 ${isCollapsed ? "justify-center" : "justify-between"}`}>
+        <div className={`flex items-center h-16 px-3 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ease-in-out ${isCollapsed ? "justify-center" : "justify-between"}`}>
           {isCollapsed ? (
             // When collapsed, show only the app logo centered
             <div className="flex items-center justify-center w-full">
-              <div className="p-2 bg-primary/10 rounded-lg">
+              <div className="p-2 bg-primary/10 rounded-lg transition-all duration-200 ease-in-out">
                 <BookOpen className="h-5 w-5 text-primary" />
               </div>
             </div>
           ) : (
             // When expanded, show logo and toggle button
             <>
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-primary/10 rounded-lg">
+              <div className="flex items-center gap-2 transition-all duration-300 ease-in-out">
+                <div className="p-2 bg-primary/10 rounded-lg transition-all duration-200 ease-in-out">
                   <BookOpen className="h-5 w-5 text-primary" />
                 </div>
-                <span className="font-semibold text-lg">StudyTracker</span>
+                <span className="font-semibold text-lg opacity-100 transition-opacity duration-300 ease-in-out">StudyTracker</span>
               </div>
               
               <Button 
                 variant="ghost" 
                 size="icon" 
                 onClick={toggleSidebar} 
-                className="h-8 w-8 hover:bg-muted/50 hidden md:flex"
+                className="h-8 w-8 hover:bg-muted/50 hidden md:flex transition-all duration-200 ease-in-out hover:scale-105"
               >
                 <PanelLeft className="h-4 w-4" />
                 <span className="sr-only">Toggle Sidebar</span>
@@ -86,60 +86,60 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/dashboard")}
-                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/dashboard")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-all duration-200 ease-in-out hover:scale-[1.02] ${getNavClass(location.pathname === "/dashboard")}`}
               >
-                <ListTodo className="h-5 w-5 flex-shrink-0" />
-                {!isCollapsed && <span>Dashboard</span>}
+                <ListTodo className="h-5 w-5 flex-shrink-0 transition-all duration-200 ease-in-out" />
+                {!isCollapsed && <span className="transition-opacity duration-300 ease-in-out opacity-100">Dashboard</span>}
               </SidebarMenuButton>
             </SidebarMenuItem>
             
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/courses")}
-                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/courses")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-all duration-200 ease-in-out hover:scale-[1.02] ${getNavClass(location.pathname === "/courses")}`}
               >
-                <Folder className="h-5 w-5 flex-shrink-0" />
-                {!isCollapsed && <span>My Courses</span>}
+                <Folder className="h-5 w-5 flex-shrink-0 transition-all duration-200 ease-in-out" />
+                {!isCollapsed && <span className="transition-opacity duration-300 ease-in-out opacity-100">My Courses</span>}
               </SidebarMenuButton>
             </SidebarMenuItem>
             
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/courses/new")}
-                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/courses/new")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-all duration-200 ease-in-out hover:scale-[1.02] ${getNavClass(location.pathname === "/courses/new")}`}
               >
-                <Plus className="h-5 w-5 flex-shrink-0" />
-                {!isCollapsed && <span>New Course</span>}
+                <Plus className="h-5 w-5 flex-shrink-0 transition-all duration-200 ease-in-out" />
+                {!isCollapsed && <span className="transition-opacity duration-300 ease-in-out opacity-100">New Course</span>}
               </SidebarMenuButton>
             </SidebarMenuItem>
             
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/calendar")}
-                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/calendar")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-all duration-200 ease-in-out hover:scale-[1.02] ${getNavClass(location.pathname === "/calendar")}`}
               >
-                <Calendar className="h-5 w-5 flex-shrink-0" />
-                {!isCollapsed && <span>Calendar</span>}
+                <Calendar className="h-5 w-5 flex-shrink-0 transition-all duration-200 ease-in-out" />
+                {!isCollapsed && <span className="transition-opacity duration-300 ease-in-out opacity-100">Calendar</span>}
               </SidebarMenuButton>
             </SidebarMenuItem>
 
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/activities")}
-                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/activities")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-all duration-200 ease-in-out hover:scale-[1.02] ${getNavClass(location.pathname === "/activities")}`}
               >
-                <Activity className="h-5 w-5 flex-shrink-0" />
-                {!isCollapsed && <span>Activities</span>}
+                <Activity className="h-5 w-5 flex-shrink-0 transition-all duration-200 ease-in-out" />
+                {!isCollapsed && <span className="transition-opacity duration-300 ease-in-out opacity-100">Activities</span>}
               </SidebarMenuButton>
             </SidebarMenuItem>
             
             <SidebarMenuItem>
               <SidebarMenuButton 
                 onClick={() => handleNavLinkClick("/profile")}
-                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-colors ${getNavClass(location.pathname === "/profile")}`}
+                className={`flex items-center ${isCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-lg transition-all duration-200 ease-in-out hover:scale-[1.02] ${getNavClass(location.pathname === "/profile")}`}
               >
-                <Settings className="h-5 w-5 flex-shrink-0" />
-                {!isCollapsed && <span>Profile</span>}
+                <Settings className="h-5 w-5 flex-shrink-0 transition-all duration-200 ease-in-out" />
+                {!isCollapsed && <span className="transition-opacity duration-300 ease-in-out opacity-100">Profile</span>}
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -147,14 +147,14 @@ export function AppSidebar() {
 
         {/* User section at bottom */}
         {!isCollapsed && user && (
-          <div className="p-3 border-t bg-background/50">
+          <div className="p-3 border-t bg-background/50 transition-all duration-300 ease-in-out">
             <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-8 w-8 flex-shrink-0">
+              <div className="flex items-center gap-3 transition-all duration-200 ease-in-out">
+                <Avatar className="h-8 w-8 flex-shrink-0 transition-all duration-200 ease-in-out">
                   <AvatarImage src={user.avatarUrl} alt={user.name} />
                   <AvatarFallback className="text-xs">{getInitials(user.name)}</AvatarFallback>
                 </Avatar>
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 transition-opacity duration-300 ease-in-out opacity-100">
                   <div className="text-sm font-medium truncate">{user.name}</div>
                   <div className="text-xs text-muted-foreground truncate">{user.email}</div>
                 </div>
@@ -163,7 +163,7 @@ export function AppSidebar() {
                 onClick={logout}
                 variant="ghost"
                 size="sm"
-                className="justify-start text-sm text-muted-foreground hover:text-primary"
+                className="justify-start text-sm text-muted-foreground hover:text-primary transition-all duration-200 ease-in-out hover:scale-[1.02]"
               >
                 Sign Out
               </Button>
@@ -173,8 +173,8 @@ export function AppSidebar() {
 
         {/* Collapsed user avatar */}
         {isCollapsed && user && (
-          <div className="p-3 border-t bg-background/50 flex justify-center">
-            <Avatar className="h-8 w-8">
+          <div className="p-3 border-t bg-background/50 flex justify-center transition-all duration-300 ease-in-out">
+            <Avatar className="h-8 w-8 transition-all duration-200 ease-in-out hover:scale-105">
               <AvatarImage src={user.avatarUrl} alt={user.name} />
               <AvatarFallback className="text-xs">{getInitials(user.name)}</AvatarFallback>
             </Avatar>

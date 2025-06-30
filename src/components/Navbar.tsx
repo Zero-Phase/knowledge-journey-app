@@ -25,11 +25,11 @@ export function Navbar() {
   };
 
   return (
-    <div className="h-16 border-b flex items-center px-4 justify-between bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
+    <div className="h-16 border-b flex items-center px-4 justify-between bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 transition-all duration-200 ease-in-out">
       <div className="flex items-center gap-2">
         {/* Show sidebar trigger on mobile always, on desktop only when sidebar is collapsed */}
-        <SidebarTrigger className="md:hidden" />
-        {!isSidebarExpanded && <SidebarTrigger className="hidden md:flex" />}
+        <SidebarTrigger className="md:hidden transition-all duration-200 ease-in-out hover:scale-105" />
+        {!isSidebarExpanded && <SidebarTrigger className="hidden md:flex transition-all duration-200 ease-in-out hover:scale-105" />}
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3">
@@ -38,12 +38,12 @@ export function Navbar() {
           size="icon"
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           aria-label="Toggle theme"
-          className="h-8 w-8 sm:h-9 sm:w-9"
+          className="h-8 w-8 sm:h-9 sm:w-9 transition-all duration-200 ease-in-out hover:scale-110"
         >
           {theme === 'dark' ? (
-            <Sun className="h-4 w-4 sm:h-5 sm:w-5" />
+            <Sun className="h-4 w-4 sm:h-5 sm:w-5 transition-all duration-200 ease-in-out" />
           ) : (
-            <Moon className="h-4 w-4 sm:h-5 sm:w-5" />
+            <Moon className="h-4 w-4 sm:h-5 sm:w-5 transition-all duration-200 ease-in-out" />
           )}
         </Button>
         
@@ -51,26 +51,26 @@ export function Navbar() {
           variant="ghost" 
           size="icon" 
           aria-label="Notifications"
-          className="h-8 w-8 sm:h-9 sm:w-9"
+          className="h-8 w-8 sm:h-9 sm:w-9 transition-all duration-200 ease-in-out hover:scale-110"
         >
-          <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+          <Bell className="h-4 w-4 sm:h-5 sm:w-5 transition-all duration-200 ease-in-out" />
         </Button>
 
         {user && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full transition-all duration-200 ease-in-out hover:scale-110">
+                <Avatar className="h-8 w-8 transition-all duration-200 ease-in-out">
                   <AvatarImage src={user.avatarUrl} alt={user.name} />
                   <AvatarFallback className="text-xs">{getInitials(user.name)}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuContent align="end" className="w-48 transition-all duration-200 ease-in-out">
               <DropdownMenuItem asChild>
-                <Link to="/profile" className="w-full">Profile Settings</Link>
+                <Link to="/profile" className="w-full transition-all duration-150 ease-in-out hover:bg-muted">Profile Settings</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={logout} className="w-full">
+              <DropdownMenuItem onClick={logout} className="w-full transition-all duration-150 ease-in-out hover:bg-muted">
                 Sign Out
               </DropdownMenuItem>
             </DropdownMenuContent>
