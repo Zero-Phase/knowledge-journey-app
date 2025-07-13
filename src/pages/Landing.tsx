@@ -79,7 +79,7 @@ const Landing = () => {
             </span>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Button
               variant="ghost"
               size="icon"
@@ -92,14 +92,16 @@ const Landing = () => {
             <Button
               variant="ghost"
               onClick={() => navigate("/login")}
-              className="font-medium"
+              className="font-medium text-sm px-2 sm:px-4"
+              size="sm"
             >
               Sign In
             </Button>
             
             <Button
               onClick={() => navigate("/signup")}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium text-sm px-3 sm:px-4"
+              size="sm"
             >
               Get Started
             </Button>
@@ -129,19 +131,19 @@ const Landing = () => {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <Button
-                size="lg"
+                size="default"
                 onClick={() => navigate("/signup")}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold px-8 py-4 text-lg group"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg group w-full sm:w-auto"
               >
                 Start Your Journey
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               
               <Button
-                size="lg"
+                size="default"
                 variant="outline"
                 onClick={() => navigate("/login")}
-                className="px-8 py-4 text-lg font-semibold border-2"
+                className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold border-2 w-full sm:w-auto"
               >
                 Sign In
               </Button>
